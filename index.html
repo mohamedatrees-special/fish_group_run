@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إيفينت جري حديقة الأسماك (5 كم) - AGE Group Run</title>
+    <title>إيفينت جري حديقة الأسماك (5 كم) - الجمعة 16 أكتوبر 2026 - AGE Group Run</title>
     <style>
         /* استدعاء الخطوط من جوجل */
         @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&display=swap');
@@ -81,6 +81,17 @@
             color: #1a5238;
             margin-top: 0;
             font-size: 2em;
+        }
+
+        .event-badge {
+            display: inline-block;
+            background: #1a5238;
+            color: #f1c40f;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
 
         .schedule-grid {
@@ -321,8 +332,8 @@
     <header>
         <img src="logo.png" alt="AGE Group Run Logo" class="event-logo">
         <h1>🏃‍♂️ جرية حديقة الأسماك (5 كم) 🌳</h1>
-        <h2>يوم رياضي وترفيهي وتكريم أبطال التحديات السابقة ❤️</h2>
-        <p>يسر فريق <strong>AGE Group Run</strong> دعوتكم للمشاركة في جرية مجانية لمسافة 5 كم بحديقة الأسماك يوم الجمعة القادم 🌍<br>
+        <h2>الجمعة، 16 أكتوبر 2026 ❤️</h2>
+        <p>يسر فريق <strong>AGE Group Run</strong> دعوتكم للمشاركة في جرية مجانية لمسافة 5 كم بحديقة الأسماك بالزمالك 🌍<br>
         تجمع رياضي ممتع يتبعه سيشن يوجا وتحديات ترفيهية وتوزيع شهادات المشاركة لجميع الحاضرين!</p>
     </header>
 
@@ -330,7 +341,8 @@
         
         <!-- تفاصيل وبرنامج اليوم -->
         <section class="info-section">
-            <h3>📅 برنامج وتفاصيل اليوم (الجمعة القادم - حديقة الأسماك)</h3>
+            <span class="event-badge">🗓️ الموعد: الجمعة، 16 أكتوبر 2026</span>
+            <h3>برنامج وتفاصيل اليوم (حديقة الأسماك - الزمالك)</h3>
             <p>الدعوة عامة والتسجيل وشهادات التقدير مجاناً بالكامل لجميع المشاركين. يرجى تسجيل نشاطك عبر تطبيق <strong>Strava</strong>:</p>
             
             <div class="schedule-grid">
@@ -356,7 +368,6 @@
             <div class="video-showcase">
                 <h4>🎥 نبذة عن سيشن اليوجا مع كابتن مروة قاسم</h4>
                 <div class="video-wrapper">
-                    <!-- يمكنك استبدال video.mp4 باسم ملف الفيديو الخاص بك -->
                     <video controls poster="background.jpg">
                         <source src="yoga_video.mp4" type="video/mp4">
                         متصفحك لا يدعم تشغيل الفيديو.
@@ -428,7 +439,7 @@
                     <!-- ملخص السلة يظهر عند الاختيار -->
                     <div class="cart-summary" id="cartSummary">
                         <h4>الإجمالي المطلوب (<span id="totalQty">0</span> تيشيرت): <span id="totalPrice">0</span> ج.م</h4>
-                        <p class="shipping-note">📍 الاستلام في حديقة الأسماك يوم الإيفينت</p>
+                        <p class="shipping-note">📍 الاستلام في حديقة الأسماك يوم الإيفينت (16 أكتوبر 2026)</p>
                     </div>
                 </div>
 
@@ -520,8 +531,6 @@
             submitBtn.innerText = 'جاري تسجيل البيانات...';
             submitBtn.disabled = true;
 
-            const formData = new FormData(form);
-            
             let totalCount = 0;
             const tshirtsArray = [];
 
@@ -533,31 +542,37 @@
             const finalPrice = totalCount * tshirtPrice;
             const tshirtsMergedText = tshirtsArray.length > 0 ? tshirtsArray.join(' ، ') : 'بدون تيشيرت';
 
-            formData.append('tshirts', tshirtsMergedText);
-            formData.append('total_price', finalPrice);
+            // تجهيز البيانات بصيغة URLSearchParams لتفادي حظر CORS
+            const params = new URLSearchParams();
+            params.append('name', document.getElementById('name').value);
+            params.append('age', document.getElementById('age').value);
+            params.append('whatsapp', document.getElementById('whatsapp').value);
+            params.append('tshirts', tshirtsMergedText);
+            params.append('total_price', finalPrice);
 
             // رابط Google Apps Script الخاص بك
-            const webAppUrl = 'https://script.google.com/macros/s/AKfycbyLyEowtX2kv16hSOTnQsTkAxZor-JisxaPufNjyHZjp20Dur-_NgMp1lQXjT46pJEj/exec'; 
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycby96tZJSJ3NZvCcyCpVU6J_GcIi2_nAXVmfaY7Prmr2LJHYly0vEWk7FPZxb2P7Ljs/exec'; 
 
             fetch(webAppUrl, {
                 method: 'POST',
-                body: formData
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params.toString()
             })
-            .then(response => response.json())
-            .then(data => {
-                alert('تم تسجيلك بنجاح في إيفينت جرية حديقة الأسماك! في انتظارك يوم الجمعة القادم الساعة 7:30 صباحاً.');
+            .then(() => {
+                alert('تم تسجيلك بنجاح في إيفينت جرية حديقة الأسماك! في انتظارك يوم الجمعة 16 أكتوبر الساعة 7:30 صباحاً.');
                 form.reset();
                 tshirtCart.clear();
                 renderTshirtCart();
                 submitBtn.disabled = false;
             })
             .catch(error => {
-                console.error('Error!', error.message);
-                alert('تم إرسال بياناتك بنجاح! نلقاكم يوم الجمعة في حديقة الأسماك.');
-                form.reset();
-                tshirtCart.clear();
-                renderTshirtCart();
+                console.error('Error!', error);
+                alert('حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.');
                 submitBtn.disabled = false;
+                submitBtn.innerText = 'تأكيد التسجيل المجاني';
             });
         });
     </script>
